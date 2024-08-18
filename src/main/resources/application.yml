@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  threads:
+    virtual:
+      enabled: true
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.rafaandrade.reservation.integration.kafka.message
+    topics:
+      booking-promotion:
+        name: booking-promotion
+        partitions: 10
+        replicas: 1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/reservation
+    username: reservation
+    password: reservation
+  jpa:
+    database-plataform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.ddl-auto: create-drop
