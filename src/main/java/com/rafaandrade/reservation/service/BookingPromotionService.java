@@ -13,13 +13,13 @@ import static com.rafaandrade.reservation.model.enums.ReservationStatus.REJECTED
 @RequiredArgsConstructor
 public class BookingPromotionService {
 
-    public static final long MAX_BOOKING_PER_DAY = 100;
+    public static final long MAX_BOOKING_PER_DAY = 50;
 
     private final ReservationRepository reservationRepository;
     private final StatusNotificationProducer statusNotificationProducer;
 
     @Transactional
-    public void promotesBooking(long reservationId) {
+    public void promotes(long reservationId) {
         reservationRepository.findById(reservationId)
                 .ifPresent(reservation -> {
                     long acceptedCount = reservationRepository.countByStatusAndDate(ACCEPTED, reservation.getDate());

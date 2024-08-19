@@ -1,4 +1,4 @@
-package com.rafaandrade.reservation.controller.response;
+package com.rafaandrade.reservation.controller.request;
 
 import com.rafaandrade.reservation.model.Reservation;
 import com.rafaandrade.reservation.model.enums.ReservationStatus;

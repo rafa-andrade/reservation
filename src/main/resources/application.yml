@@ -1,5 +1,8 @@
 server:
   port: 8080
+  tomcat:
+    threads:
+      max: 8
 
 spring:
   threads:
@@ -25,6 +28,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/reservation
     username: reservation
     password: reservation
+    hikari:
+      minimum-idle: 50
+      maximum-pool-size: 50
   jpa:
     database-plataform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create

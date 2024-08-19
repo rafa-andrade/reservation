@@ -1,10 +1,7 @@
 package com.rafaandrade.reservation.model;
 
 import com.rafaandrade.reservation.model.enums.ReservationStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -19,16 +16,22 @@ public class Reservation {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private LocalDate date;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private UUID externalReference;
 
+    @Column(nullable = false)
     private LocalDateTime creationDate;
 }

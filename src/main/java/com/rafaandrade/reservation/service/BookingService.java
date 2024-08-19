@@ -21,7 +21,7 @@ public class BookingService {
         bookingPromotionProducer.send(reservation);
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000L);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -10,7 +10,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaConfig {
 
     @Bean
-    public NewTopic transactionEventTopic(
+    public NewTopic bookingPromotionTopic(
             @Value("${spring.kafka.topics.booking-promotion.name}") String name,
             @Value("${spring.kafka.topics.booking-promotion.partitions}") int partitions,
             @Value("${spring.kafka.topics.booking-promotion.replicas}") int replicas

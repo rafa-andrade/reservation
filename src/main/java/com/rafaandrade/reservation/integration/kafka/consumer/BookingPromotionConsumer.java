@@ -17,6 +17,6 @@ public class BookingPromotionConsumer {
             groupId = "booking-promotion"
     )
     public void process(ReservationMessage reservation) {
-        bookingPromotionService.promotesBooking(reservation.id());
+        bookingPromotionService.promotes(reservation.id());
     }
 }

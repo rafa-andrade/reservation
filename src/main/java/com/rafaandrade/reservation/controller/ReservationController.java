@@ -1,7 +1,7 @@
 package com.rafaandrade.reservation.controller;
 
 import com.rafaandrade.reservation.controller.request.ReservationRequest;
-import com.rafaandrade.reservation.controller.response.ReservationResponse;
+import com.rafaandrade.reservation.controller.request.ReservationResponse;
 import com.rafaandrade.reservation.model.Reservation;
 import com.rafaandrade.reservation.service.BookingService;
 import com.rafaandrade.reservation.service.ReservationService;
@@ -24,8 +24,10 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public UUID book(@RequestBody @Valid ReservationRequest reservationRequest) {
-        Reservation reservation = bookingService.book(reservationRequest.toModel());
+    public UUID book(@RequestBody @Valid ReservationRequest request) {
+        Reservation reservation = bookingService.book(request.toModel());
+
+
         return reservation.getExternalReference();
     }
 

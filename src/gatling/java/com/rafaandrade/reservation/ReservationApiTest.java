@@ -4,6 +4,9 @@ import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
+import java.util.Random;
+import java.util.UUID;
+
 import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
@@ -19,17 +22,21 @@ public class ReservationApiTest extends Simulation {
                     http("Request 1").post("/api/v1/reservations")
                             .body(StringBody(
                                     """
-                                    {
-                                        "name": "Rafa Andrade",
-                                        "email": "rafadev88@gmail.com",
-                                        "date": "2022-12-31"
-                                    }
-                                    """))
+                                        {
+                                            "name": "Test Name %s",
+                                            "email": "%s@gmail.com",
+                                            "date": "2022-12-27"
+                                        }
+                                    """.formatted(
+                                            UUID.randomUUID().toString(),
+                                            UUID.randomUUID().toString()
+                                    )
+                            ))
             );
 
     {
         setUp(
-                myScenario.injectOpen(atOnceUsers(100))
+                myScenario.injectOpen(atOnceUsers(32))
         ).protocols(httpProtocol);
     }
 }
