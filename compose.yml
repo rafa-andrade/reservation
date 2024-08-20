@@ -1,0 +1,16 @@
+
+services:
+  reservation:
+    image: reservation:0.0.1-SNAPSHOT
+    environment:
+      spring.kafka.bootstrap-servers: kafka:29092
+      spring.datasource.url: jdbc:postgresql://postgres:5432/reservation
+    ports:
+      - 8080:8080
+    networks:
+      - my-proxy-net
+
+networks:
+  my-proxy-net:
+    external:
+      name: reservation-network
