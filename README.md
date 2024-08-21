@@ -1,23 +1,23 @@
-#Reservation
+# Reservation
 
-##Project Description
+## Project Description
 The Reservation project is an application that processes reservation requests for events, ensuring order and daily availability.
 
-##Features
+## Features
 The main features of the project include:
 
 - Create Reservation: Allows users to make reservations via a POST request. Returns a unique external reference for the created reservation.
 - Get Reservation: Allows users to retrieve a specific reservation using a unique external reference via GET.
 - List Reservations: Allows users to retrieve all existing reservations through a GET request.
 
-##Technologies Used
+## Technologies Used
 - Java 21
 - GraalVM
 - Spring Boot 3
 - Kafka
 - PostgreSQL
 
-##Prerequisites
+## Prerequisites
 To run the project, you need to have the following installed:
 
 - Java 21
@@ -26,7 +26,7 @@ To run the project, you need to have the following installed:
 - Docker Compose
 
 
-##Installation and Execution
+## Installation and Execution
 Follow the steps below to clone the repository and run the project locally:
 
 Clone the repository:
@@ -72,7 +72,7 @@ To run the tests, execute:
 ./gradlew test
 ```
 
-##Author
+## Author
 Rafael Andrade
 
 GitHub: https://github.com/rafa-andrade
