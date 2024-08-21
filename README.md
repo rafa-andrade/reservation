@@ -86,6 +86,7 @@ Gatling test:
 Rafael Andrade
 
 GitHub: https://github.com/rafa-andrade
+
 LinkedIn: https://www.linkedin.com/in/rafael-oliveira-andrade/
 
 
