@@ -7,12 +7,15 @@ import com.rafaandrade.reservation.service.BookingService;
 import com.rafaandrade.reservation.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
@@ -35,7 +38,7 @@ public class ReservationController {
     public ReservationResponse getReservation(@PathVariable UUID externalReference) {
         return reservationService.findReservationByReference(externalReference)
                 .map(ReservationResponse::from)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @GetMapping

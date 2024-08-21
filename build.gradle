@@ -1,10 +1,12 @@
 plugins {
 	id "java"
-	id "org.graalvm.buildtools.native" version "0.10.2"
 	id "org.springframework.boot" version "3.3.2"
 	id "io.spring.dependency-management" version "1.1.6"
+	id "org.graalvm.buildtools.native" version "0.10.2"
 	id "io.freefair.lombok" version "8.7.1"
-	id 'io.gatling.gradle' version "3.11.5.2"
+	id "jacoco"
+	id "io.gatling.gradle" version "3.11.5.2"
+	id "org.owasp.dependencycheck" version "10.0.3"
 }
 
 group = "com.rafaandrade"
@@ -16,8 +18,6 @@ java {
 	}
 }
 
-def openapiVersion = "2.6.0"
-
 repositories {
 	mavenCentral()
 }
@@ -28,12 +28,50 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation "org.springframework.kafka:spring-kafka"
 	implementation "org.springframework.boot:spring-boot-starter-validation"
-
 	implementation "org.postgresql:postgresql"
-	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$openapiVersion"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+var excludes = [
+	'com/rafaandrade/reservation/model/*',
+	'com/rafaandrade/reservation/controller/request/*',
+	'com/rafaandrade/reservation/config/*',
+	'com/rafaandrade/reservation/integration/kafka/message/*',
+	'com/rafaandrade/reservation/Application.class'
+]
+
+jacocoTestReport {
+	//output: ~/workspace/reservation/build/reports/jacoco/test/html/index.html
+	dependsOn test
+	afterEvaluate {
+		getClassDirectories().setFrom(classDirectories.files.collect {
+			fileTree(dir: it, exclude: excludes)
+		})
+	}
+	finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification {
+	dependsOn test
+	afterEvaluate {
+		getClassDirectories().setFrom(classDirectories.files.collect {
+			fileTree(dir: it, exclude: excludes)
+		})
+	}
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.9
+			}
+		}
+	}
 }
 
 tasks.named("test") {

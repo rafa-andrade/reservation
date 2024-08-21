@@ -19,13 +19,6 @@ public class BookingService {
         reservation.setStatus(REQUESTED);
         reservationRepository.save(reservation);
         bookingPromotionProducer.send(reservation);
-
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         return reservation;
     }
 }
