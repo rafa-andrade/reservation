@@ -33,16 +33,10 @@ Clone the repository:
 git clone https://github.com/rafa-andrade/reservation.git
 ```
 
-Navigate to the project directory:
-
-```bash
-cd reservation
-```
-
 Start dependences with Docker Compose:
 
 ```bash
-docker compose -f compose.override.yml up -d
+docker compose -f compose.override.yml up
 ```
 
 Run the project with Gradle:
@@ -54,8 +48,9 @@ Run the project with Gradle:
 Alternatively, you can build the Docker image and run it:
 
 ```bash
-./gradlew bootBuildImage
-docker compose -f compose.yml up -d
+./gradlew bootBuildImage --imageName=reservation-aot
+
+docker compose -f compose.yml up
 ```
 
 Testing

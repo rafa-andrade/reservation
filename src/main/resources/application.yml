@@ -5,9 +5,9 @@ server:
       max: 8
 
 spring:
-  threads:
-    virtual:
-      enabled: true
+#  threads:
+#    virtual:
+#      enabled: true
   kafka:
     bootstrap-servers: localhost:29092
     listener:

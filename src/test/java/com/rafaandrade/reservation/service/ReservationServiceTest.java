@@ -54,7 +54,7 @@ public class ReservationServiceTest {
         List<Reservation> reservations = Arrays.asList(new Reservation(), new Reservation());
         when(reservationRepository.findAll()).thenReturn(reservations);
 
-        List<Reservation> result = reservationService.findAllReservations();
+        List<Reservation> result = reservationService.findReservations(Optional.empty());
 
         assertEquals(2, result.size());
         assertEquals(reservations, result);

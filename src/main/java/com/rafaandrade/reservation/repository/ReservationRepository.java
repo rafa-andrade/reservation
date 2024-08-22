@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +17,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     long countByStatusAndDate(ReservationStatus status, LocalDate date);
 
     Optional<Reservation> findByExternalReference(UUID externalReference);
+
+    List<Reservation> findByDate(LocalDate date);
 
     Optional<Reservation> findByEmailAndDateAndStatus(String email, LocalDate date, ReservationStatus status);
 

@@ -48,7 +48,6 @@ test {
 }
 
 jacocoTestReport {
-	//output: ~/workspace/reservation/build/reports/jacoco/test/html/index.html
 	dependsOn test
 	afterEvaluate {
 		getClassDirectories().setFrom(classDirectories.files.collect {

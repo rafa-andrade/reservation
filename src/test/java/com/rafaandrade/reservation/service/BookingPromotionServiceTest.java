@@ -56,7 +56,7 @@ public class BookingPromotionServiceTest {
                 .thenReturn(Optional.empty());
 
         when(reservationRepository.countByStatusAndDate(ACCEPTED, date))
-                .thenReturn(40L);
+                .thenReturn(5L);
 
         bookingPromotionService.promotes(email, date);
 

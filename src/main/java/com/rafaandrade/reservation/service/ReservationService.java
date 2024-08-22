@@ -5,6 +5,7 @@ import com.rafaandrade.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +20,9 @@ public class ReservationService {
         return reservationRepository.findByExternalReference(externalReference);
     }
 
-    public List<Reservation> findAllReservations() {
-        return reservationRepository.findAll();
+    public List<Reservation> findReservations(Optional<LocalDate> date) {
+        return date.map(reservationRepository::findByDate)
+                .orElseGet(reservationRepository::findAll);
     }
+
 }

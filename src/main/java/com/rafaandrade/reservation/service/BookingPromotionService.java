@@ -18,7 +18,7 @@ import static com.rafaandrade.reservation.model.enums.ReservationStatus.REJECTED
 @RequiredArgsConstructor
 public class BookingPromotionService {
 
-    public static final long MAX_BOOKING_PER_DAY = 50;
+    public static final long MAX_BOOKING_PER_DAY = 10;
 
     private final ReservationRepository reservationRepository;
     private final StatusNotificationProducer statusNotificationProducer;

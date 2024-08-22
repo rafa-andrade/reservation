@@ -106,13 +106,13 @@ public class ReservationControllerTest {
                 ReservationResponse.from(reservation2)
         );
 
-        when(reservationService.findAllReservations()).thenReturn(reservations);
+        when(reservationService.findReservations(Optional.empty())).thenReturn(reservations);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/reservations")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(reservationResponses)));
 
-        verify(reservationService, times(1)).findAllReservations();
+        verify(reservationService, times(1)).findReservations(Optional.empty());
     }
 }

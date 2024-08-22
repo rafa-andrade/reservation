@@ -7,13 +7,14 @@ import com.rafaandrade.reservation.service.BookingService;
 import com.rafaandrade.reservation.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -40,8 +41,8 @@ public class ReservationController {
     }
 
     @GetMapping
-    public List<ReservationResponse> getAllReservations() {
-        return reservationService.findAllReservations()
+    public List<ReservationResponse> getReservations(@RequestParam(required = false) LocalDate date) {
+        return reservationService.findReservations(ofNullable(date))
                 .stream()
                 .map(ReservationResponse::from)
                 .toList();
