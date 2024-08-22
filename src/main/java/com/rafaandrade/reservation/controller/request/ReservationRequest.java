@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
+import static com.rafaandrade.reservation.model.enums.ReservationStatus.REQUESTED;
 import static java.time.LocalDateTime.now;
 import static java.util.UUID.randomUUID;
 
@@ -28,6 +29,7 @@ public record ReservationRequest(
         reservation.setDate(date);
         reservation.setExternalReference(randomUUID());
         reservation.setCreationDate(now());
+        reservation.setStatus(REQUESTED);
         return reservation;
     }
 }

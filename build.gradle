@@ -1,7 +1,7 @@
 plugins {
 	id "java"
-	id "org.springframework.boot" version "3.3.2"
 	id "io.spring.dependency-management" version "1.1.6"
+	id "org.springframework.boot" version "3.3.2"
 	id "org.graalvm.buildtools.native" version "0.10.2"
 	id "io.freefair.lombok" version "8.7.1"
 	id "jacoco"
@@ -35,11 +35,7 @@ dependencies {
 	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
-test {
-	finalizedBy jacocoTestReport
-}
-
-var excludes = [
+var jacocoTestExcludes = [
 	'com/rafaandrade/reservation/model/*',
 	'com/rafaandrade/reservation/controller/request/*',
 	'com/rafaandrade/reservation/config/*',
@@ -47,12 +43,16 @@ var excludes = [
 	'com/rafaandrade/reservation/Application.class'
 ]
 
+test {
+	finalizedBy jacocoTestReport
+}
+
 jacocoTestReport {
 	//output: ~/workspace/reservation/build/reports/jacoco/test/html/index.html
 	dependsOn test
 	afterEvaluate {
 		getClassDirectories().setFrom(classDirectories.files.collect {
-			fileTree(dir: it, exclude: excludes)
+			fileTree(dir: it, exclude: jacocoTestExcludes)
 		})
 	}
 	finalizedBy jacocoTestCoverageVerification
@@ -62,7 +62,7 @@ jacocoTestCoverageVerification {
 	dependsOn test
 	afterEvaluate {
 		getClassDirectories().setFrom(classDirectories.files.collect {
-			fileTree(dir: it, exclude: excludes)
+			fileTree(dir: it, exclude: jacocoTestExcludes)
 		})
 	}
 	violationRules {

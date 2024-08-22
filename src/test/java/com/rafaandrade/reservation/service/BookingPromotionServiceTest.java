@@ -2,8 +2,8 @@ package com.rafaandrade.reservation.service;
 
 import com.rafaandrade.reservation.integration.kafka.producer.StatusNotificationProducer;
 import com.rafaandrade.reservation.model.Reservation;
-import com.rafaandrade.reservation.model.enums.ReservationStatus;
 import com.rafaandrade.reservation.repository.ReservationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.rafaandrade.reservation.model.enums.ReservationStatus.ACCEPTED;
+import static com.rafaandrade.reservation.model.enums.ReservationStatus.REJECTED;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,52 +29,58 @@ public class BookingPromotionServiceTest {
     @InjectMocks
     private BookingPromotionService bookingPromotionService;
 
-    @Test
-    void testPromotesAccepted() {
-        long reservationId = 1L;
-        Reservation reservation = new Reservation();
-        reservation.setId(reservationId);
-        reservation.setDate(LocalDate.parse("2024-08-20"));
+    private String email;
+    private LocalDate date;
 
-        when(reservationRepository.findById(reservationId)).thenReturn(Optional.of(reservation));
-        when(reservationRepository.countByStatusAndDate(ReservationStatus.ACCEPTED, reservation.getDate())).thenReturn(30L);
-
-        bookingPromotionService.promotes(reservationId);
-
-        assertEquals(ReservationStatus.ACCEPTED, reservation.getStatus());
-        verify(reservationRepository, times(1)).findById(reservationId);
-        verify(reservationRepository, times(1)).countByStatusAndDate(ReservationStatus.ACCEPTED, reservation.getDate());
-        verify(statusNotificationProducer, times(1)).send(reservation);
+    @BeforeEach
+    void setUp() {
+        email = "test@example.com";
+        date = LocalDate.now();
     }
 
     @Test
-    void testPromotesRejected() {
-        long reservationId = 1L;
-        Reservation reservation = new Reservation();
-        reservation.setId(reservationId);
-        reservation.setDate(LocalDate.parse("2024-08-20"));
+    void testPromotes_AlreadyAcceptedReservation() {
+        when(reservationRepository.findByEmailAndDateAndStatus(email, date, ACCEPTED))
+                .thenReturn(Optional.of(new Reservation()));
 
-        when(reservationRepository.findById(reservationId)).thenReturn(Optional.of(reservation));
-        when(reservationRepository.countByStatusAndDate(ReservationStatus.ACCEPTED, reservation.getDate())).thenReturn(60L);
+        bookingPromotionService.promotes(email, date);
 
-        bookingPromotionService.promotes(reservationId);
-
-        assertEquals(ReservationStatus.REJECTED, reservation.getStatus());
-        verify(reservationRepository, times(1)).findById(reservationId);
-        verify(reservationRepository, times(1)).countByStatusAndDate(ReservationStatus.ACCEPTED, reservation.getDate());
-        verify(statusNotificationProducer, times(1)).send(reservation);
-    }
-
-    @Test
-    void testPromotesReservationNotFound() {
-        long reservationId = 1L;
-
-        when(reservationRepository.findById(reservationId)).thenReturn(Optional.empty());
-
-        bookingPromotionService.promotes(reservationId);
-
-        verify(reservationRepository, times(1)).findById(reservationId);
         verify(reservationRepository, never()).countByStatusAndDate(any(), any());
-        verify(statusNotificationProducer, never()).send(any());
+        verify(reservationRepository, never()).updateStatusByEmailAndDate(any(), any(), any());
+        verify(statusNotificationProducer, never()).send(anyString(), any(), any());
+    }
+
+    @Test
+    void testPromotes_LessThanMaxBookings() {
+        when(reservationRepository.findByEmailAndDateAndStatus(email, date, ACCEPTED))
+                .thenReturn(Optional.empty());
+
+        when(reservationRepository.countByStatusAndDate(ACCEPTED, date))
+                .thenReturn(40L);
+
+        bookingPromotionService.promotes(email, date);
+
+        verify(reservationRepository, times(1))
+                .updateStatusByEmailAndDate(ACCEPTED, email, date);
+
+        verify(statusNotificationProducer, times(1))
+                .send(email, date, ACCEPTED);
+    }
+
+    @Test
+    void testPromotes_ExceedsMaxBookings() {
+        when(reservationRepository.findByEmailAndDateAndStatus(email, date, ACCEPTED))
+                .thenReturn(Optional.empty());
+
+        when(reservationRepository.countByStatusAndDate(ACCEPTED, date))
+                .thenReturn(60L);
+
+        bookingPromotionService.promotes(email, date);
+
+        verify(reservationRepository, times(1))
+                .updateStatusByEmailAndDate(REJECTED, email, date);
+
+        verify(statusNotificationProducer, times(1))
+                .send(email, date, REJECTED);
     }
 }

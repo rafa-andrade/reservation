@@ -30,12 +30,12 @@ public class BookingServiceTest {
         Reservation reservation = new Reservation();
         reservation.setStatus(ReservationStatus.REQUESTED);
 
-        when(reservationRepository.save(any(Reservation.class))).thenReturn(reservation);
+        when(reservationRepository.saveAndFlush(any(Reservation.class))).thenReturn(reservation);
 
         Reservation result = bookingService.book(reservation);
 
         assertEquals(ReservationStatus.REQUESTED, result.getStatus());
-        verify(reservationRepository, times(1)).save(reservation);
+        verify(reservationRepository, times(1)).saveAndFlush(reservation);
         verify(bookingPromotionProducer, times(1)).send(reservation);
     }
 }

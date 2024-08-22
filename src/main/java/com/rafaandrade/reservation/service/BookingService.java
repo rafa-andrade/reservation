@@ -6,8 +6,6 @@ import com.rafaandrade.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.rafaandrade.reservation.model.enums.ReservationStatus.REQUESTED;
-
 @Service
 @RequiredArgsConstructor
 public class BookingService {
@@ -16,8 +14,7 @@ public class BookingService {
     private final BookingPromotionProducer bookingPromotionProducer;
 
     public Reservation book(Reservation reservation) {
-        reservation.setStatus(REQUESTED);
-        reservationRepository.save(reservation);
+        reservationRepository.saveAndFlush(reservation);
         bookingPromotionProducer.send(reservation);
         return reservation;
     }

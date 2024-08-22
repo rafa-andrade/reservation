@@ -1,18 +1,20 @@
 package com.rafaandrade.reservation.integration.kafka.producer;
 
-import com.rafaandrade.reservation.integration.kafka.message.ReservationMessage;
-import com.rafaandrade.reservation.model.Reservation;
+import com.rafaandrade.reservation.integration.kafka.message.StatusNotificationMessage;
+import com.rafaandrade.reservation.model.enums.ReservationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
 public class StatusNotificationProducer {
 
-    private final KafkaTemplate<String, ReservationMessage> kafkaTemplate;
+    private final KafkaTemplate<String, StatusNotificationMessage> kafkaTemplate;
 
-    public void send(Reservation reservation) {
-        kafkaTemplate.send("status-notification", ReservationMessage.from(reservation));
+    public void send(String email, LocalDate date, ReservationStatus status) {
+        kafkaTemplate.send("status-notification", new StatusNotificationMessage(email, date, status));
     }
 }

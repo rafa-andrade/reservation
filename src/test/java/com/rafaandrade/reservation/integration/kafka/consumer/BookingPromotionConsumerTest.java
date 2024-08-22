@@ -35,6 +35,6 @@ public class BookingPromotionConsumerTest {
 
         bookingPromotionConsumer.process(reservationMessage);
 
-        verify(bookingPromotionService, times(1)).promotes(10L);
+        verify(bookingPromotionService, times(1)).promotes(reservationMessage.email(), reservationMessage.date());
     }
 }

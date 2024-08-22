@@ -10,6 +10,8 @@ spring:
       enabled: true
   kafka:
     bootstrap-servers: localhost:29092
+    listener:
+      ack-mode: RECORD
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -33,4 +35,6 @@ spring:
       maximum-pool-size: 50
   jpa:
     database-plataform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate.ddl-auto: create
+    hibernate:
+      ddl-auto: update
+      #ddl-auto: create

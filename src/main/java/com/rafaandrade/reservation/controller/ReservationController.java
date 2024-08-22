@@ -29,8 +29,6 @@ public class ReservationController {
     @ResponseStatus(CREATED)
     public UUID book(@RequestBody @Valid ReservationRequest request) {
         Reservation reservation = bookingService.book(request.toModel());
-
-
         return reservation.getExternalReference();
     }
 

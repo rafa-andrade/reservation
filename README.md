@@ -82,6 +82,11 @@ Gatling test:
 ./gradlew gatlingRun
 ```
 
+Jacoco Test Report:
+```
+~/workspace/reservation/build/reports/jacoco/test/html/index.html
+```
+
 ## Author
 Rafael Andrade
 
