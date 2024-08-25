@@ -16,13 +16,6 @@ public class BookingService {
     public Reservation book(Reservation reservation) {
         reservationRepository.saveAndFlush(reservation);
         bookingPromotionProducer.send(reservation);
-
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
         return reservation;
     }
 }

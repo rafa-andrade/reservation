@@ -23,7 +23,7 @@ public class ReservationApiTest extends Simulation {
                                         {
                                             "name": "#{nome}",
                                             "email": "#{nome}@gmail.com",
-                                            "date": "2024-08-27"
+                                            "date": "2024-10-27"
                                         }
                                     """
                             ))

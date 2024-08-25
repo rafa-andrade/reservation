@@ -1,6 +1,7 @@
 # Reservation
 
-The Reservation project is a system that processes reservation requests for events, ensuring order and daily availability.
+## Description
+The Reservation project was created as a proof of concept to demonstrate how to build a modern Java application in 2024 using Java 21 and Spring Boot 3, with the use of virtual threads and native image. The project deals with online reservations, managing multiple concurrent requests for a limited number of daily availabilities.
 
 ## Features
 The main features of the project include:
@@ -42,6 +43,8 @@ docker compose -f compose.override.yml up
 Run the project with Gradle:
 
 ```bash
+cd reservation
+
 ./gradlew bootRun
 ```
 
@@ -80,6 +83,11 @@ Gatling test:
 Jacoco Test Report:
 ```
 ~/workspace/reservation/build/reports/jacoco/test/html/index.html
+```
+
+Owasp Dependency Check:
+```bash
+./gradlew dependencyCheckAnalyze
 ```
 
 ## Author

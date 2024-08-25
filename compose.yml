@@ -1,8 +1,7 @@
 
 services:
   reservation:
-    image: reservation:latest
-    #image: reservation-aot:latest
+    image: reservation-aot:latest
     environment:
       spring.kafka.bootstrap-servers: kafka:29092
       spring.datasource.url: jdbc:postgresql://postgres:5432/reservation
